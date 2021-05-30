@@ -1,0 +1,13 @@
+{
+    "name": "Pluto Slider Server",
+    "description": "Pluto Slider Server for zohaib.me",
+    "keywords": [
+      "Blog",
+      "Pluto",
+      "Julia"
+    ],
+    "website": "https://plutosliderserver.zohaib.me",
+    "repository": "https://github.com/zabirauf/blog",
+    "success_url": "/",
+    "stack": "Container"
+  }
