@@ -1,0 +1,14 @@
+[Export]
+baked_state = false
+offer_binder = true
+slider_server_url="https://plutosliderserver.zohaib.me"
+ignore_cache = [
+    "index.jl",
+]
+create_index = false
+
+[SliderServer]
+exclude=[
+    # Add any notebooks to exclude here
+    # "notebooks/basic.jl",
+]
