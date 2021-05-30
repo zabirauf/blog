@@ -17,4 +17,4 @@ optimize(;minify=false);
 cp("../notebooks", "__site/notebooks");
 
 "== Extra website config files ==";
-write("__site/CNAME", "interactive.zohaib.me");
+write("__site/CNAME", "blog.zohaib.me");
