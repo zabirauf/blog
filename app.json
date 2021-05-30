@@ -9,5 +9,5 @@
     "website": "https://plutosliderserver.zohaib.me",
     "repository": "https://github.com/zabirauf/blog",
     "success_url": "/",
-    "stack": "Container"
+    "stack": "container"
   }
