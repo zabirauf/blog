@@ -28,7 +28,6 @@ jobs:
           push: true
           tags: |
             registry.digitalocean.com/personal-apps-registry/pltuo-slider-server:latest
-            registry.digitalocean.com/personal-apps-registry/pluto-slider-server:sha-${{ github.sha }}
 
   deploy-server:
     needs: build
