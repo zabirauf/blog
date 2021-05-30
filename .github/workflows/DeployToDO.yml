@@ -51,6 +51,6 @@ jobs:
             echo "starting server instance..."
             docker run -d \
               --restart always \
-              -p 0.0.0.0:80:1234 \
+              -p 0.0.0.0:1234:1234 \
               --name pluto-slider-server \
               registry.digitalocean.com/personal-apps-registry/pluto-slider-server:latest
