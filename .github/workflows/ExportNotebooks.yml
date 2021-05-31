@@ -26,7 +26,7 @@ jobs:
                   version: 1.6.0
             - name: Run Pluto notebooks
               run: julia --project=pluto-deployment-environment tools/run_pluto_notebooks.jl
-            - name: Franklin
+            - name: NextJS
               run: julia tools/setup_nextjs.jl
             - name: Build and Deploy
               uses: JamesIves/github-pages-deploy-action@releases/v3
