@@ -1,4 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/website/_/husky.sh"
-
+. "$(dirname "$0")/_/husky.sh"
+cd website
 npx --no-install lint-staged
