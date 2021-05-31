@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/website/_/husky.sh"
+
+npx --no-install lint-staged
