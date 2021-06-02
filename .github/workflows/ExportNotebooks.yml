@@ -1,4 +1,4 @@
-name: Main - Export Pluto notebooks & Deploy
+name: Main - Export Pluto notebooks & Deploy NextJS blog
 on:
     push:
         branches:
