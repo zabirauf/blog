@@ -3,6 +3,7 @@ import { MDXRemote } from 'next-mdx-remote'
 import MDXComponents from '@/components/MDXComponents'
 import PageTitle from '@/components/PageTitle'
 import PostLayout from '@/layouts/PostLayout'
+import NotebookPostLayout from '@/layouts/NotebookPostLayout'
 import generateRss from '@/lib/generate-rss'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
 
@@ -34,13 +35,20 @@ export async function getStaticProps({ params }) {
 
 export default function Blog({ post, prev, next }) {
   const { mdxSource, frontMatter } = post
+  const { notebook } = frontMatter
 
   return (
     <>
       {frontMatter.draft !== true ? (
-        <PostLayout frontMatter={frontMatter} prev={prev} next={next}>
-          <MDXRemote {...mdxSource} components={MDXComponents} />
-        </PostLayout>
+        notebook ? (
+          <NotebookPostLayout frontMatter={frontMatter} prev={prev} next={next}>
+            <MDXRemote {...mdxSource} components={MDXComponents} />
+          </NotebookPostLayout>
+        ) : (
+          <PostLayout frontMatter={frontMatter} prev={prev} next={next}>
+            <MDXRemote {...mdxSource} components={MDXComponents} />
+          </PostLayout>
+        )
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>
