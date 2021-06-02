@@ -1,0 +1,8 @@
+__site/
+.DS_Store
+franklin
+franklin.pub
+node_modules/
+notebooks/**/*.html
+notebooks/**/*.plutostate
+pluto_state_cache/

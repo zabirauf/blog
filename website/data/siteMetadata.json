@@ -1,0 +1,16 @@
+{
+  "title": "Blog: Zohaib || zabirauf",
+  "author": "Zohaib Rauf",
+  "headerTitle": "Zohaib blog",
+  "description": "A blog where I share my learnings on tech.",
+  "language": "en-us",
+  "siteUrl": "https://blog.zohaib.me",
+  "siteRepo": "https://github.com/zabirauf/blog",
+  "image": "/static/images/avatar.jpg",
+  "socialBanner": "/static/images/twitter-card.png",
+  "email": "zabirauf@gmail.com",
+  "github": "https://github.com/zabirauf",
+  "twitter": "https://twitter.com/zabirauf",
+  "linkedin": "https://www.linkedin.com/in/zohaibrauf/",
+  "locale": "en-US"
+}
