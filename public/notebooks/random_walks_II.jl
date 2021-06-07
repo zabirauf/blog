@@ -51,9 +51,6 @@ md"""
 
 """
 
-# ╔═╡ 739cf3b4-aed5-4df1-b3c9-db4af2670b86
-"Hello World"
-
 # ╔═╡ 4e7b163e-dfd0-457e-b1f3-8807a4d8060a
 md"""
 Let's start by thinking about Pascal's triangle. (Note that [Pascal was not the first person to study these numbers](https://en.wikipedia.org/wiki/Pascal%27s_triangle).)
@@ -465,7 +462,6 @@ end
 # ╠═85c26eb4-c258-4a8b-9415-7b5f7ddff02a
 # ╟─2d48bfc6-9617-11eb-3a85-279bebd21332
 # ╟─30162386-039f-4cd7-9121-a3382be3c294
-# ╠═739cf3b4-aed5-4df1-b3c9-db4af2670b86
 # ╟─4e7b163e-dfd0-457e-b1f3-8807a4d8060a
 # ╠═e8ceab7b-45db-4393-bb8e-e000ecf78d2c
 # ╠═2d4dffb9-39e4-48de-9688-980b96814c9f
