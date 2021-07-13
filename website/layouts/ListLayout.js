@@ -9,7 +9,8 @@ const postDateTemplate = { year: 'numeric', month: 'long', day: 'numeric' }
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = posts.filter((frontMatter) => {
-    const searchContent = frontMatter.title + frontMatter.summary + frontMatter.tags.join(' ')
+    const searchContent =
+      frontMatter.title + frontMatter.summary + (frontMatter.tags?.join(' ') || '')
     return searchContent.toLowerCase().includes(searchValue.toLowerCase())
   })
 

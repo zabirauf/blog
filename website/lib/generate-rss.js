@@ -8,7 +8,7 @@ const generateRssItem = (post) => `
     <description>${post.summary}</description>
     <pubDate>${new Date(post.date).toUTCString()}</pubDate>
     <author>${siteMetadata.email} (${siteMetadata.author})</author>
-    ${post.tags.map((t) => `<category>${t}</category>`).join('')}
+    ${post.tags?.map((t) => `<category>${t}</category>`)?.join('') || ''}
   </item>
 `
 
