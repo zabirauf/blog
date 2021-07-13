@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.15.1
+# v0.14.1
 
 using Markdown
 using InteractiveUtils
@@ -11,6 +11,20 @@ macro bind(def, element)
         global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
         el
     end
+end
+
+# ╔═╡ 1e932be2-1382-4531-ba8c-6918693e0dd8
+begin
+	import Pkg
+	Pkg.activate(mktempdir())
+	
+	Pkg.add([
+		"Plots",
+		"PlutoUI",
+		"Statistics",
+		"Distributions",
+		"PGFPlotsX"
+	])
 end
 
 # ╔═╡ 4456435e-e58e-4058-ba0d-b4e363500e2e
@@ -1015,6 +1029,7 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
+# ╠═1e932be2-1382-4531-ba8c-6918693e0dd8
 # ╠═4456435e-e58e-4058-ba0d-b4e363500e2e
 # ╠═df6153ce-0dc2-4450-9da8-d19790716b9b
 # ╟─6393d9ab-83b0-461c-8226-5a21ded017a5
