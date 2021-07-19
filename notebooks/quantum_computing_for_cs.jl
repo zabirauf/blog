@@ -1,22 +1,26 @@
 ### A Pluto.jl notebook ###
-# v0.14.5
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 72d474ec-4327-11eb-26d0-072a3be1e84f
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
+# ╔═╡ 8ba9d770-7c17-42e0-ad91-62e682f3bd56
 begin
-	using Pkg
-	
-	Pkg.activate(mktempdir())
-	
-	#Pkg.add([])
+	using PlutoUI
+	using Match
 end
 
 # ╔═╡ 8423cb12-4273-11eb-2b32-5568d93043dd
 md"""
-## [zohaib.me](https://zohaib.me) - [@zabirauf](https://twitter.com/zabirauf)
-
 # Quantum Computing for Computer Scientist
 """
 
@@ -71,6 +75,24 @@ end
 
 # ╔═╡ 15bce1d2-4326-11eb-150a-9d72bde51c62
 (before=cb_0, after=negation(cb_0))
+
+# ╔═╡ 02e60756-d374-436f-a257-ac9012dc74ee
+@bind i1_n1 Select(["0", "1"])
+
+# ╔═╡ 227578ae-8159-46ef-abac-2597dc06a57a
+@bind i1_op Select(["identity", "negation"])
+
+# ╔═╡ e479b0ed-808e-4395-ad0a-af7f7d4bf53c
+md"""
+**Result**
+"""
+
+# ╔═╡ 62ebff97-79d7-4919-8f21-5376eac59dea
+let
+	op = i1_op == "identity" ? identity : negation
+	n1 = i1_n1 == "0" ? cb_0 : cb_1
+	op(n1)
+end
 
 # ╔═╡ 916735c4-4326-11eb-0fcb-673a126ce8d5
 md"""
@@ -147,6 +169,35 @@ cb_1 ⊗ cb_0 ⊗ cb_1
 # ╔═╡ 7d3269dc-432f-11eb-3126-e1e3388c2327
 # To represent |111⟩
 cb_1 ⊗ cb_1 ⊗ cb_1
+
+# ╔═╡ 41272b8b-6f1d-4fca-8bbf-52340d0d548a
+@bind i2_n1 Select(["00", "01", "10", "11"])
+
+# ╔═╡ 7b1b536d-0c7b-4c36-8c6a-e4bcc3c3cc79
+@bind i2_n2 Select(["00", "01", "10", "11"]; default="01")
+
+# ╔═╡ 37ae2bda-8e5e-45f2-a461-3c10133d8b62
+md"""
+**Result of Tensor Product**
+"""
+
+# ╔═╡ 87391070-e173-41ab-99ca-0208d6597ca2
+let
+	n1 = @match i2_n1 begin
+		"00" => cb_00
+		"01" => cb_01
+		"10" => cb_10
+		"11" => cb_11
+	end
+	n2 = @match i2_n2 begin
+		"00" => cb_00
+		"01" => cb_01
+		"10" => cb_10
+		"11" => cb_11
+	end
+	
+	n1 ⊗ n2
+end
 
 # ╔═╡ b92e0540-432a-11eb-2e05-379067c4ab90
 md"""
@@ -280,8 +331,28 @@ You can also compose Hadamard operation to process bigger states e.g. for $$2$$ 
 # ╔═╡ 037b38ee-4375-11eb-3ed4-819e2e7bfbef
 (H_op ⊗ H_op) * cb_11
 
+# ╔═╡ b36c8fbc-48d9-41d0-8f78-aed4d9a8ab2e
+@bind i3_n1 Select(["000", "001", "010", "011", "100", "101", "110", "111"])
+
+# ╔═╡ c821bad0-a96d-4e8f-babd-f82a7da2c3e9
+md"""
+**Result of passing the value through Hadamard gate**
+"""
+
 # ╔═╡ 1e68e11a-4375-11eb-1b3f-51f7aa9d84c9
-(H_op ⊗ H_op ⊗ H_op) * (cb_0 ⊗ cb_1 ⊗ cb_1) # H|011⟩
+let
+	n = @match i3_n1 begin
+		"000" => (cb_0 ⊗ cb_0 ⊗ cb_0)
+		"001" => (cb_0 ⊗ cb_0 ⊗ cb_1)
+		"010" => (cb_0 ⊗ cb_1 ⊗ cb_0)
+		"011" => (cb_0 ⊗ cb_1 ⊗ cb_1)
+		"100" => (cb_1 ⊗ cb_0 ⊗ cb_0)
+		"101" => (cb_1 ⊗ cb_0 ⊗ cb_1)
+		"110" => (cb_1 ⊗ cb_1 ⊗ cb_0)
+		"111" => (cb_1 ⊗ cb_1 ⊗ cb_1)
+	end
+	(H_op ⊗ H_op ⊗ H_op) * n
+end
 
 # ╔═╡ 43b60a7e-4375-11eb-365b-fdf42513d80f
 @assert sum_quantum_state((H_op ⊗ H_op ⊗ H_op) * (cb_0 ⊗ cb_1 ⊗ cb_1)) == 1
@@ -367,13 +438,118 @@ md"""
 Quantum teleportation allows you to send the state of an arbitrary qbit from one location to another by way of two other entangled qbits. You can transfer qbit states (cut and paste) but not clone them and it is called no-cloning theorem.
 
 The teleportation is not faster-than-light because some classical information must be sent.
+"""
 
-> Question: If classical information must be sent then what's the use?
+# ╔═╡ 703d4274-af3f-4aa6-92e9-638ae4962264
+md"""
+---
+"""
+
+# ╔═╡ 1c2f26d7-5ed6-43ed-9b26-95a006612b26
+function interactive_helper_html()
+	html"""
+		<div style="background-color: #d2e2f7;font-size: 48px;font-family: Vollkorn, serif;">
+			⚡️ Interactive
+		</div>
+	"""
+end
+
+# ╔═╡ 881b45e2-e6c3-46dd-8bcb-99a7d0f8fa0e
+interactive_helper_html()
+
+# ╔═╡ 63bda2ca-14a7-4995-b8d8-7115d6f691e0
+interactive_helper_html()
+
+# ╔═╡ 712b5c8b-cd68-4dec-acf2-f3ce7b6eaea6
+interactive_helper_html()
+
+# ╔═╡ 00000000-0000-0000-0000-000000000001
+PLUTO_PROJECT_TOML_CONTENTS = """
+[deps]
+Match = "7eb4fadd-790c-5f42-8a69-bfa0b872bfbf"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+
+[compat]
+Match = "~1.1.0"
+PlutoUI = "~0.7.9"
+"""
+
+# ╔═╡ 00000000-0000-0000-0000-000000000002
+PLUTO_MANIFEST_TOML_CONTENTS = """
+# This file is machine-generated - editing it directly is not advised
+
+[[Base64]]
+uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+
+[[Dates]]
+deps = ["Printf"]
+uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[InteractiveUtils]]
+deps = ["Markdown"]
+uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+
+[[JSON]]
+deps = ["Dates", "Mmap", "Parsers", "Unicode"]
+git-tree-sha1 = "81690084b6198a2e1da36fcfda16eeca9f9f24e4"
+uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+version = "0.21.1"
+
+[[Logging]]
+uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
+
+[[Markdown]]
+deps = ["Base64"]
+uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
+
+[[Match]]
+git-tree-sha1 = "5cf525d97caf86d29307150fcba763a64eaa9cbe"
+uuid = "7eb4fadd-790c-5f42-8a69-bfa0b872bfbf"
+version = "1.1.0"
+
+[[Mmap]]
+uuid = "a63ad114-7e13-5084-954f-fe012c677804"
+
+[[Parsers]]
+deps = ["Dates"]
+git-tree-sha1 = "c8abc88faa3f7a3950832ac5d6e690881590d6dc"
+uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
+version = "1.1.0"
+
+[[PlutoUI]]
+deps = ["Base64", "Dates", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "Suppressor"]
+git-tree-sha1 = "44e225d5837e2a2345e69a1d1e01ac2443ff9fcb"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.9"
+
+[[Printf]]
+deps = ["Unicode"]
+uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+
+[[Random]]
+deps = ["Serialization"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[[Reexport]]
+git-tree-sha1 = "5f6c21241f0f655da3952fd60aa18477cf96c220"
+uuid = "189a3867-3050-52da-a836-e630ba90ab69"
+version = "1.1.0"
+
+[[Serialization]]
+uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+
+[[Suppressor]]
+git-tree-sha1 = "a819d77f31f83e5792a76081eee1ea6342ab8787"
+uuid = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+version = "0.2.0"
+
+[[Unicode]]
+uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 """
 
 # ╔═╡ Cell order:
+# ╟─8ba9d770-7c17-42e0-ad91-62e682f3bd56
 # ╟─8423cb12-4273-11eb-2b32-5568d93043dd
-# ╟─72d474ec-4327-11eb-26d0-072a3be1e84f
 # ╟─63dae6be-4364-11eb-056a-8785db062735
 # ╟─3cc2bb2e-43fa-11eb-3945-ff510d51fe72
 # ╟─6ac48d68-4364-11eb-1012-337857ac86a3
@@ -384,6 +560,11 @@ The teleportation is not faster-than-light because some classical information mu
 # ╟─2b598b6c-4326-11eb-1801-3d5765d51bca
 # ╠═a8a5749c-4325-11eb-3e86-cb66466a4617
 # ╠═15bce1d2-4326-11eb-150a-9d72bde51c62
+# ╟─881b45e2-e6c3-46dd-8bcb-99a7d0f8fa0e
+# ╟─02e60756-d374-436f-a257-ac9012dc74ee
+# ╟─227578ae-8159-46ef-abac-2597dc06a57a
+# ╟─e479b0ed-808e-4395-ad0a-af7f7d4bf53c
+# ╟─62ebff97-79d7-4919-8f21-5376eac59dea
 # ╟─916735c4-4326-11eb-0fcb-673a126ce8d5
 # ╠═d3ed69aa-4359-11eb-25dd-4ff19aa31f4d
 # ╟─2441b812-4327-11eb-3f75-c10037cd1f04
@@ -400,6 +581,11 @@ The teleportation is not faster-than-light because some classical information mu
 # ╟─385dde4a-432f-11eb-1b66-977dc7fa634f
 # ╠═49af253c-432f-11eb-184e-936240d9723c
 # ╠═7d3269dc-432f-11eb-3126-e1e3388c2327
+# ╟─63bda2ca-14a7-4995-b8d8-7115d6f691e0
+# ╟─41272b8b-6f1d-4fca-8bbf-52340d0d548a
+# ╟─7b1b536d-0c7b-4c36-8c6a-e4bcc3c3cc79
+# ╟─37ae2bda-8e5e-45f2-a461-3c10133d8b62
+# ╟─87391070-e173-41ab-99ca-0208d6597ca2
 # ╟─b92e0540-432a-11eb-2e05-379067c4ab90
 # ╟─1fb20a1e-432b-11eb-19c2-fd75fee5ccd2
 # ╠═c0a78e18-432a-11eb-1223-3bad74db13ef
@@ -424,7 +610,10 @@ The teleportation is not faster-than-light because some classical information mu
 # ╠═88eab6b2-4361-11eb-21d6-51deb59a3ffd
 # ╟─edcffdc2-4374-11eb-0bb6-b13e3e2a8a4f
 # ╠═037b38ee-4375-11eb-3ed4-819e2e7bfbef
-# ╠═1e68e11a-4375-11eb-1b3f-51f7aa9d84c9
+# ╟─712b5c8b-cd68-4dec-acf2-f3ce7b6eaea6
+# ╟─b36c8fbc-48d9-41d0-8f78-aed4d9a8ab2e
+# ╟─c821bad0-a96d-4e8f-babd-f82a7da2c3e9
+# ╟─1e68e11a-4375-11eb-1b3f-51f7aa9d84c9
 # ╟─43b60a7e-4375-11eb-365b-fdf42513d80f
 # ╟─da788d42-4366-11eb-0398-45966d74f080
 # ╟─b46103f0-4361-11eb-345b-11d548d51ef7
@@ -440,3 +629,7 @@ The teleportation is not faster-than-light because some classical information mu
 # ╠═f6ea1a2e-43f5-11eb-3dbb-6708cba6153a
 # ╟─5510dc94-43f8-11eb-15c9-11924e0c8cde
 # ╟─5b9ffe32-43f8-11eb-3e3b-55c55ac69d63
+# ╟─703d4274-af3f-4aa6-92e9-638ae4962264
+# ╟─1c2f26d7-5ed6-43ed-9b26-95a006612b26
+# ╟─00000000-0000-0000-0000-000000000001
+# ╟─00000000-0000-0000-0000-000000000002
