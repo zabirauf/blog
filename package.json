@@ -11,6 +11,7 @@
     "prepare": "cd .. && husky install website/.husky"
   },
   "dependencies": {
+    "@google/model-viewer": "^1.9.0",
     "@mapbox/rehype-prism": "^0.6.0",
     "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/typography": "^0.4.0",
