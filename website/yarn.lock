@@ -1008,6 +1008,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@google/model-viewer@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@google/model-viewer/-/model-viewer-1.9.0.tgz#5c550ff99172041b06aca785be5a8be56b2e3a2c"
+  integrity sha512-F/9Zwtz5bJsyLN8d9MP07DdCO2dHZV3TpKt7ZWBnFqZko24zasNaiTmhrzWx91Tv/6dAFhWRFA2/tlQ8yosWkQ==
+
 "@hapi/accept@5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.2.tgz#ab7043b037e68b722f93f376afb05e85c0699523"
