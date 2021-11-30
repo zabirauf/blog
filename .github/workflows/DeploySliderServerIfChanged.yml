@@ -24,6 +24,8 @@ jobs:
     build:
         needs: push-to-main-slider-deploy
         runs-on: ubuntu-latest
+        outputs:
+          docker_image: registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v1
         steps:
           - name: Check Out main-slider-deploy branch
             uses: actions/checkout@v2
@@ -45,7 +47,7 @@ jobs:
               context: .
               push: true
               tags: |
-                registry.digitalocean.com/personal-apps-registry/pluto-slider-server:latest
+                registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v1
 
     deploy-server:
         needs: build
@@ -60,15 +62,16 @@ jobs:
               key: ${{ secrets.DO_API_KEY }}
               port: 22
               script: |
-                doctl registry login --expiry-seconds 180
-                docker pull registry.digitalocean.com/personal-apps-registry/pluto-slider-server:latest
-
-                docker stop pluto-slider-server || true
-                docker rm pluto-slider-server || true
-
-                echo "starting server instance..."
+                [ ! "($docker ps -a | grep ${{needs.build.outputs.docker_image}})" ] && \
+                doctl registry login --expiry-seconds 180 && \
+                docker pull ${{needs.build.outputs.docker_image}} && \
+                
+                (docker stop pluto-slider-server || true) && \
+                (docker rm pluto-slider-server || true) && \
+                \
+                echo "starting server instance..." && \
                 docker run -d \
                 --restart always \
                 -p 0.0.0.0:1234:1234 \
                 --name pluto-slider-server \
-                registry.digitalocean.com/personal-apps-registry/pluto-slider-server:latest
+                ${{needs.build.outputs.docker_image}}
