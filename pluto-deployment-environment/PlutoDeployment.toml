@@ -1,5 +1,6 @@
 [Export]
 baked_state = false
+baked_notebookfile=false
 offer_binder = true
 slider_server_url="https://plutosliderserver.zohaib.me"
 ignore_cache = [

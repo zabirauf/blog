@@ -23,11 +23,14 @@ jobs:
             - name: Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: 1.6.0
-            - name: Run Pluto notebooks
+                  version: 1.6
+            
+            - name: Run and export Pluto notebooks
               run: julia --project=pluto-deployment-environment tools/run_pluto_notebooks.jl
+
             - name: NextJS
               run: julia tools/setup_nextjs.jl
+
             - name: Build and Deploy
               uses: JamesIves/github-pages-deploy-action@releases/v3
               with:
