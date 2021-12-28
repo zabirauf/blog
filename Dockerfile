@@ -12,15 +12,16 @@ FROM julia:1.6.0
 # HTTP port
 EXPOSE 1234
 RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install git -y
 # add a new user called "pluto"
 RUN useradd -ms /bin/bash pluto
 # set the current directory
 WORKDIR /home/pluto
 # run the rest of commands as pluto user
 USER pluto
-# copy the contents of the github repository into /home/pluto
-COPY --chown=pluto . ${HOME}
 
+# clone the contents of the github repository into /home/pluto
+RUN git clone https://github.com/zabirauf/blog.git ${HOME}
 
 # Initialize the julia project environment that will be used to run the bind server.
 RUN julia --project=${HOME}/pluto-deployment-environment -e "import Pkg; Pkg.instantiate(); Pkg.precompile()"

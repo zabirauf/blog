@@ -25,7 +25,7 @@ jobs:
         needs: push-to-main-slider-deploy
         runs-on: ubuntu-latest
         outputs:
-          docker_image: registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v1
+          docker_image: registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v2
         steps:
           - name: Check Out main-slider-deploy branch
             uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
               context: .
               push: true
               tags: |
-                registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v1
+                registry.digitalocean.com/personal-apps-registry/pluto-slider-server:v2
 
     deploy-server:
         needs: build
@@ -65,7 +65,7 @@ jobs:
                 [ ! "($docker ps -a | grep ${{needs.build.outputs.docker_image}})" ] && \
                 doctl registry login --expiry-seconds 180 && \
                 docker pull ${{needs.build.outputs.docker_image}} && \
-                
+                \
                 (docker stop pluto-slider-server || true) && \
                 (docker rm pluto-slider-server || true) && \
                 \
