@@ -21,10 +21,10 @@ WORKDIR /home/pluto
 USER pluto
 
 # clone the contents of the github repository into /home/pluto
-RUN git clone https://github.com/zabirauf/blog.git ${HOME}
+RUN git clone https://github.com/zabirauf/blog.git ${HOME}/blog
 
 # Initialize the julia project environment that will be used to run the bind server.
-RUN julia --project=${HOME}/pluto-deployment-environment -e "import Pkg; Pkg.instantiate(); Pkg.precompile()"
+RUN julia --project=${HOME}/blog/pluto-deployment-environment -e "import Pkg; Pkg.instantiate(); Pkg.precompile()"
 
 # The "default command" for this docker thing.
-CMD ["julia", "--project=/home/pluto/pluto-deployment-environment", "-e", "import PlutoSliderServer; PlutoSliderServer.run_git_directory(\".\"; SliderServer_port=1234 , SliderServer_host=\"0.0.0.0\")"]
+CMD ["julia", "--project=/home/pluto/blog/pluto-deployment-environment", "-e", "import PlutoSliderServer; PlutoSliderServer.run_git_directory(\".\/blog\"; SliderServer_port=1234 , SliderServer_host=\"0.0.0.0\")"]
