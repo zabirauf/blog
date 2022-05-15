@@ -6,6 +6,7 @@ import Head from 'next/head'
 
 import { SEO } from '@/components/SEO'
 import LayoutWrapper from '@/components/LayoutWrapper'
+import Script from 'next/script'
 
 export default function App({ Component, pageProps }) {
   return (
@@ -16,6 +17,14 @@ export default function App({ Component, pageProps }) {
       <DefaultSeo {...SEO} />
       <LayoutWrapper>
         <Component {...pageProps} />
+        <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+        <noscript>
+          <img
+            src="https://queue.simpleanalyticscdn.com/noscript.gif"
+            alt=""
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </noscript>
       </LayoutWrapper>
     </ThemeProvider>
   )
