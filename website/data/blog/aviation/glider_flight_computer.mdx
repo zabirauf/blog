@@ -35,10 +35,10 @@ I [got my glider rating](/blog/aviation/glider_addon_rating) in October 2021 and
 
 I used [Kobo Nia](https://us.kobobooks.com/products/kobo-nia) for this as its cost was $100 and its a newer e-device which means it will have better processor, good resolution. Though Kobo Nia is not officially supported by the XCSoar but unofficially it works with certain version.
 
-I got the [Bluefly TTL GPS](https://www.blueflyvario.com/product/blueflyvario_ttl_gps_v12-2/) version which works with the Kobo Nia and it cost was approx. $75 USD ($105 AUD as its shipped from Australia).
+I got the [BlueFly TTL GPS](https://www.blueflyvario.com/product/blueflyvario_ttl_gps_v12-2/) version which works with the Kobo Nia and it cost was approx. $75 USD ($105 AUD as its shipped from Australia).
 
-The Bluefly needs to be soldered to Kobo so you need a soldering iron and some soldering skills.
-I also desgined a 3D printed case to hold both of them together so if you have 3D printer laying around you can also print that. The case isn't yet designed to be mounted, I'm working on a solution for that. Alternatively you can always hotglue Bluefly directly to you Kobo.
+The BlueFly needs to be soldered to Kobo so you need a soldering iron and some soldering skills.
+I also desgined a 3D printed case to hold both of them together so if you have 3D printer laying around you can also print that. The case isn't yet designed to be mounted, I'm working on a solution for that. Alternatively you can always hotglue BlueFly directly to you Kobo.
 
 ## 1. Backup Kobo and install XCSoar
 
@@ -71,7 +71,7 @@ You can use the **Nickel** to go back to the original Kobo Nia e-book software. 
 ## 2. Soldering BlueFly Vario
 
 Make sure the battery cable is popped of before you do anything.
-If this is first time you are soldering, get some practice on some wires to a broken circuit. The Bluefly Vario has the following layout
+If this is first time you are soldering, get some practice on some wires to a broken circuit. The BlueFly Vario has the following layout
 
 <Image
   src="/static/images/blog/glider_flight_computer/bluefly-vario-layout.png"
@@ -80,9 +80,9 @@ If this is first time you are soldering, get some practice on some wires to a br
   objectFit="contain"
 />
 
-The Bluefly Vario has the Serial Input/Output connectors which will connect to Kobo Nia connectors. When you open Kobo Nia these connectors will be on the back right side. The layout of the connection should be following. Make sure that **Rx** from one device goes to **Tx** on the other device and vice versa. **Rx** is receiver and **Tx** transmission, hence transmitted data from one device will go to receiveing end of the other. For the Ground wire from Bluefly vario, instead of connecting directly to Kobo, I connected that to one of the screw which is also ground.
+The BlueFly Vario has the Serial Input/Output connectors which will connect to Kobo Nia connectors. When you open Kobo Nia these connectors will be on the back right side. The layout of the connection should be following. Make sure that **Rx** from one device goes to **Tx** on the other device and vice versa. **Rx** is receiver and **Tx** transmission, hence transmitted data from one device will go to receiveing end of the other. For the Ground wire from BlueFly vario, instead of connecting directly to Kobo, I connected that to one of the screw which is also ground.
 
-| Bluefly Vario                                                 | Kobo Nia                                                     |
+| BlueFly Vario                                                 | Kobo Nia                                                     |
 | ------------------------------------------------------------- | ------------------------------------------------------------ |
 | <span style={{color: 'red', fontWeight: 'bold'}}>V</span>     | <span style={{color: 'red', fontWeight: 'bold'}}>V</span>    |
 | <span style={{color: 'green', fontWeight: 'bold'}}>Rx</span>  | <span style={{color:'orange', fontWeight: 'bold'}}>Tx</span> |
@@ -101,10 +101,71 @@ Once you have them soldered, make sure the solder doesn't connect to the ones ne
   allowFullScreen
 ></iframe>
 
+Once you have this connected, you can power the Kobo Nia on and if you hear the beeps that means the device has been setup.
+
+## 3. Setting up XCSoar
+
+Once you have the BlueFly connected, you can start setting up the XCSoar so you can use BlueFly, download maps etc. Once you bootup, go to **Fly** mode.
+
+### 3.1. BlueFly setup
+
+1. Click on the **M** button
+2. Go to **Config**
+3. Go to **Devices**
+4. Edit device **A**
+5. Set port to **ttymxc0**
+6. Set baud rate to **115200**
+7. Set driver to **BlueFly Vario**
+8. Press **OK**
+
+Now you can verify that the device is working fine by selecting the device and tapping on **Monitor** which should show the data coming from BlueFly vario.
+
+Once you have BlueFly ready, you want to also control various settings directly from XCSoar. The good thing is that XCSoar provides a way to add new buttons but it needs to be defined in a config file that you need to transfer from your computer.
+
+1. You can start with the config file <a href="/static/documents/BlueFly Menu.xci" target="_blank">here by downloading it</a>
+2. Connect Kobo with USB to your computer
+3. When you boot up, select Nickel so the device and SD card shows up in your computer
+4. Go to **XCSoarData** in the SD card
+5. Place the data in that folder
+
+If you want to modify what the buttons do, you can look at the [BlueFly manual](https://www.blueflyvario.com/files/BFV_HardwareSettings_Manual_v1.8.pdf) to find the commands and change/add buttons to send those commands.
+
+### 3.2 Add Maps
+
+XCSoar by default doesn't come with any map or airspace information. You would need to generate and add all that data.
+
+The map you generate shouldn't be very large (i.e. not whole of USA) as that will make loading XCSoar so slow that it may not be practically usable. Generally keep it to the state or region you are flying. You can generate multiple maps, put all of the on device and then select later which you want to use.
+
+1. Go to [XCSoar map generator](http://mapgen.xcsoar.org/)
+2. Follow the instructions to generate the map for the region you want. I generally select the 'High resolution terrain'
+3. Wait for the file to be generated and then download it
+4. Connect Kobo with USB to your computer
+5. When you boot up, select Nickel so the device and SD card shows up in your computer
+6. Go to **XCSoarData** in the SD card and create **x.Maps** folder
+7. Place the downloaded data in that folder
+
+### 3.3 Add Airspace
+
+When soaring along with airspace information you may also need latest TFRs so you don't violate them. You can use [soaringdata.info](http://soaringdata.info) to generate various airspace data and use them XCSoar, including TFRs. Where there is option of file type use the **OpenAir (.TXT)**.
+
+1. Have the airspace data ready
+2. Connect Kobo with USB to your computer
+3. When you boot up, select Nickel so the device and SD card shows up in your computer
+4. Go to **XCSoarData** in the SD card and create **y.Airspace** folder
+5. Place the data in that folder
+
+### 3.4 Add waypoints
+
+1. Have the **.cup** waypoint file ready
+2. Connect Kobo with USB to your computer
+3. When you boot up, select Nickel so the device and SD card shows up in your computer
+4. Go to **XCSoarData** in the SD card and create **z.Waypoints** folder
+5. Place the data in that folder
+
 ## Resources
 
 - [Kobo Self Build](https://gethighstayhigh.co.uk/kobo-self-build/)
-- [Bluefly Vario development](http://blueflyvario.blogspot.com/2021/11/blueflyvariottlgpsv122-released.html)
-- [Bluefly Vario Hardware Settings Manual](https://www.blueflyvario.com/files/BFV_HardwareSettings_Manual_v1.8.pdf)
+- [BlueFly Vario development](http://blueflyvario.blogspot.com/2021/11/blueflyvariottlgpsv122-released.html)
+- [BlueFly Vario Hardware Settings Manual](https://www.blueflyvario.com/files/BFV_HardwareSettings_Manual_v1.8.pdf)
 - [XCSoar 6.8.11 Manual](https://download.xcsoar.org/releases/6.8.11/XCSoar-manual.pdf)
 - [XCSoar 6.8.11 for Kobo](https://download.xcsoar.org/releases/6.8.11/KOBO/KoboRoot.tgz)
