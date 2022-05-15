@@ -1,0 +1,82 @@
+# xcsoar menu for BlueFly maintenance
+#
+# For instructions to use this XCI  
+# --------------------------------
+# Go to www.Gethighstayhigh.co.uk
+# select the XCSOAR tab
+# Page down to subject #8, User Defined menus
+#
+
+# ******* Entry for top level menu
+
+mode=Menu
+type=key
+event=Mode BlueFly
+label=BlueFly
+location=5
+
+#
+# ******* level 1 *******
+#
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BVU
+label=Vol Up
+location=1
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BVD
+label=Vol Down
+location=2
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BFS 100
+event=SendNMEAPort1 BOS 100
+label=Sink1ms
+location=3
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BFS 200
+event=SendNMEAPort1 BOS 200
+label=Sink2ms
+location=4
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BSD 1000 500 800 500 600 500 400 2000 1000 500 800 500 600 500 400 2000
+label=TestBeep
+location=5
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BOM 2
+event=SendNMEAPort1 BOF 10
+label=LXMode
+location=6
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BTN
+event=SendNMEAPort1 BOM 0
+event=SendNMEAPort1 BOF 1
+label=BFMode
+location=7
+
+mode=BlueFly
+type=key
+event=SendNMEAPort1 BTT 2000
+label=ToggOff
+location=8
+
+mode=BlueFly
+type=key
+event=Mode default
+label=Cancel
+location=9
+
+
+
