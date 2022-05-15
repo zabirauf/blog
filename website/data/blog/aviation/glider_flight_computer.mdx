@@ -1,5 +1,5 @@
 ---
-title: Glide Computer XCSoar on Kobo Nia
+title: Kobo Nia with Vario - Glide Computer
 date: '2022-05-04'
 tags: ['aviation', 'soaring', 'xcsoar']
 draft: false
@@ -32,3 +32,79 @@ I [got my glider rating](/blog/aviation/glider_addon_rating) in October 2021 and
 [Blyefly Vario](https://www.blueflyvario.com/product/blueflyvario_ttl_gps_v12-2/) is a device I found which provides the GPS, Pressure sensor, Variometer and a small speaker. Connecting this with Kobo will make the whole thing a self contained device that you can easily take from one club ship to another.
 
 ## Bill of materials
+
+I used [Kobo Nia](https://us.kobobooks.com/products/kobo-nia) for this as its cost was $100 and its a newer e-device which means it will have better processor, good resolution. Though Kobo Nia is not officially supported by the XCSoar but unofficially it works with certain version.
+
+I got the [Bluefly TTL GPS](https://www.blueflyvario.com/product/blueflyvario_ttl_gps_v12-2/) version which works with the Kobo Nia and it cost was approx. $75 USD ($105 AUD as its shipped from Australia).
+
+The Bluefly needs to be soldered to Kobo so you need a soldering iron and some soldering skills.
+I also desgined a 3D printed case to hold both of them together so if you have 3D printer laying around you can also print that. The case isn't yet designed to be mounted, I'm working on a solution for that. Alternatively you can always hotglue Bluefly directly to you Kobo.
+
+## 1. Backup Kobo and install XCSoar
+
+Kobo Nia comes with an 8GB <a href="/static/images/blog/glider_flight_computer/sd-card-sizes.jpg" target="_blank">MicroSD memory card</a> but it's not directly accessible. The reason you should backup the SD card is because you will be installing XCSoar and if something goes wrong, you can always flash the SD card to its factory state and recover. I made the mistake of not doing it and I ran into a problem, which gladly I was able to get out of it, but momentary I was in a panick thinking my newly bought $100 Kobo may be a paperweight.
+
+You would need to open the Kobo Nia to access the memory card. You can open Kobo Nia by first running something thin or your nails alongside the back case which should loosen it up. Then you can use some small flat screwdriver to open it by running it along the edge of the case and popping it up. First time it may take some time so be patient and don't try to force it to open.
+
+Once you have the case open, disconnect the powercable so you don't short anything. After that you can pull the SD card out. The SD card has some glue so you may need to shimmy it to loosen up and then take out.
+
+Connect the SD card to your computer and use [Win32DiskImager](https://sourceforge.net/projects/win32diskimager/) to create the image
+
+1. Open Win32DiskImager
+2. Enter the path where you want to create the image but suffix it with **kobo-nia.img**.
+3. Then click on **Read** which will read whatever is on that SD card and then store it in that file.
+
+Once you have backed it up, you can install XCSoar on it. You should use the XCSoar 6.8.11 version as when I tried the latest version 7.23, the touch screen didn't work so I couldn't do anything. You can download XCSoar 6.8.11 from [here](https://download.xcsoar.org/releases/6.8.11/KOBO/). Once you downloaded the **KoboRoot.tgz**, then go to the SD card that you took out of Kobo and find the folder **.kobo** and place the KoboRoot.tgz in that folder.
+
+The final step is to eject the SD card and put the SD card back, plugin in battery cable back and power it up. This will install XCSoar and when you poweron it will land you on the following screen.
+
+<Image
+  src="/static/images/blog/glider_flight_computer/kobo-nia-boot-screen.jpg"
+  width={600}
+  height={400}
+  objectFit="contain"
+/>
+.
+
+You can use the **Nickel** to go back to the original Kobo Nia e-book software. That would also be handy when next time you have to access the SD card without opening the backcover, for putting maps, waypoints and other files for XCSoar.
+
+## 2. Soldering BlueFly Vario
+
+Make sure the battery cable is popped of before you do anything.
+If this is first time you are soldering, get some practice on some wires to a broken circuit. The Bluefly Vario has the following layout
+
+<Image
+  src="/static/images/blog/glider_flight_computer/bluefly-vario-layout.png"
+  width={600}
+  height={400}
+  objectFit="contain"
+/>
+
+The Bluefly Vario has the Serial Input/Output connectors which will connect to Kobo Nia connectors. When you open Kobo Nia these connectors will be on the back right side. The layout of the connection should be following. Make sure that **Rx** from one device goes to **Tx** on the other device and vice versa. **Rx** is receiver and **Tx** transmission, hence transmitted data from one device will go to receiveing end of the other. For the Ground wire from Bluefly vario, instead of connecting directly to Kobo, I connected that to one of the screw which is also ground.
+
+| Bluefly Vario                                                 | Kobo Nia                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------ |
+| <span style={{color: 'red', fontWeight: 'bold'}}>V</span>     | <span style={{color: 'red', fontWeight: 'bold'}}>V</span>    |
+| <span style={{color: 'green', fontWeight: 'bold'}}>Rx</span>  | <span style={{color:'orange', fontWeight: 'bold'}}>Tx</span> |
+| <span style={{color: 'orange', fontWeight: 'bold'}}>Tx</span> | <span style={{color:'green', fontWeight: 'bold'}}>Rx</span>  |
+| **G**                                                         | **Screw**                                                    |
+
+Once you have them soldered, make sure the solder doesn't connect to the ones next to it. You can see the explanation in the video at 4m 8s mark.
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/QtYXJiP2cGc?start=248"
+  title="BlueFly vario with Kobo Nia YouTube video"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## Resources
+
+- [Kobo Self Build](https://gethighstayhigh.co.uk/kobo-self-build/)
+- [Bluefly Vario development](http://blueflyvario.blogspot.com/2021/11/blueflyvariottlgpsv122-released.html)
+- [Bluefly Vario Hardware Settings Manual](https://www.blueflyvario.com/files/BFV_HardwareSettings_Manual_v1.8.pdf)
+- [XCSoar 6.8.11 Manual](https://download.xcsoar.org/releases/6.8.11/XCSoar-manual.pdf)
+- [XCSoar 6.8.11 for Kobo](https://download.xcsoar.org/releases/6.8.11/KOBO/KoboRoot.tgz)
