@@ -84,8 +84,8 @@ function XCSoarConfigGenerator() {
     CANCEL_BUTTON,
   ])
   const addButton = useCallback(() => {
-    openAddButtonDialog((buttonInfo) => console.log(buttonInfo))
-  }, [])
+    openAddButtonDialog((buttonInfo) => setBlueflyButtons([...blueflyButtons, buttonInfo]))
+  }, [blueflyButtons])
   return (
     <>
       <div className="flow-root mt-6">
