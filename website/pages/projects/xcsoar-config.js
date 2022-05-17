@@ -209,7 +209,7 @@ function AddButtonDialog(props) {
                         name="button_type"
                         autoComplete="button-type"
                         className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
-                        onBlur={buttonTypeChanged}
+                        onChange={buttonTypeChanged /* eslint-disable-line no-eval */}
                       >
                         <option value={NO_OPTION_VALUE}>Please select a type</option>
                         {DEFAULT_BUTTONS.map(({ name }) => (
