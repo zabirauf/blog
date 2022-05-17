@@ -77,17 +77,56 @@ export default function About() {
 }
 
 function XCSoarConfigGenerator() {
+  const [blueflyButtons, setBlueflyButtons] = useState([
+    DEFAULT_BUTTONS[0],
+    DEFAULT_BUTTONS[1],
+    DEFAULT_BUTTONS[3],
+    CANCEL_BUTTON,
+  ])
   const addButton = useCallback(() => {
     openAddButtonDialog((buttonInfo) => console.log(buttonInfo))
   }, [])
   return (
     <>
+      <div className="flow-root mt-6">
+        <ul className="-my-5 divide-y divide-gray-200">
+          {blueflyButtons.map((button) => (
+            <li key={button.name} className="py-4">
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 flex hover:bg-indigo-50 cursor-pointer">
+                <dd className="mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                  </svg>
+                </dd>
+                <dd className="mt-1 text-2xl font-semibold text-gray-900">{button.name}</dd>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
       <button
-        type="button"
-        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        type="submit"
+        className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={addButton}
       >
-        + Add
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Add button
       </button>
     </>
   )
@@ -209,7 +248,7 @@ function AddButtonDialog(props) {
                         name="button_type"
                         autoComplete="button-type"
                         className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
-                        onChange={buttonTypeChanged /* eslint-disable-line no-eval */}
+                        onChange={buttonTypeChanged}
                       >
                         <option value={NO_OPTION_VALUE}>Please select a type</option>
                         {DEFAULT_BUTTONS.map(({ name }) => (
