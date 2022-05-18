@@ -1,21 +1,21 @@
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
-import { useState } from 'react'
-import Pagination from '@/components/Pagination'
+import Link from '@/components/Link';
+import Tag from '@/components/Tag';
+import siteMetadata from '@/data/siteMetadata';
+import { useState } from 'react';
+import Pagination from '@/components/Pagination';
 
-const postDateTemplate = { year: 'numeric', month: 'long', day: 'numeric' }
+const postDateTemplate = { year: 'numeric', month: 'long', day: 'numeric' };
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState('');
   const filteredBlogPosts = posts.filter((frontMatter) => {
-    const searchContent = frontMatter.title + frontMatter.summary + frontMatter.tags.join(' ')
-    return searchContent.toLowerCase().includes(searchValue.toLowerCase())
-  })
+    const searchContent = frontMatter.title + frontMatter.summary + frontMatter.tags.join(' ');
+    return searchContent.toLowerCase().includes(searchValue.toLowerCase());
+  });
 
   // If initialDisplayPosts exist, display it if no searchValue is specified
   const displayPosts =
-    initialDisplayPosts.length > 0 && !searchValue ? initialDisplayPosts : filteredBlogPosts
+    initialDisplayPosts.length > 0 && !searchValue ? initialDisplayPosts : filteredBlogPosts;
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
         <ul>
           {!filteredBlogPosts.length && 'No posts found.'}
           {displayPosts.map((frontMatter) => {
-            const { slug, date, title, summary, tags } = frontMatter
+            const { slug, date, title, summary, tags } = frontMatter;
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
@@ -82,7 +82,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
                   </div>
                 </article>
               </li>
-            )
+            );
           })}
         </ul>
       </div>
@@ -90,5 +90,5 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
       )}
     </>
-  )
+  );
 }

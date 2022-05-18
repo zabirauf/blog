@@ -1,7 +1,7 @@
-import siteMetadata from '@/data/siteMetadata'
-import SocialIcon from '@/components/social-icons'
-import { PageSeo } from '@/components/SEO'
-import Image from 'next/image'
+import siteMetadata from '@/data/siteMetadata';
+import SocialIcon from '@/components/social-icons';
+import { PageSeo } from '@/components/SEO';
+import Image from 'next/image';
 
 export default function About() {
   return (
@@ -52,5 +52,5 @@ export default function About() {
         </div>
       </div>
     </>
-  )
+  );
 }
