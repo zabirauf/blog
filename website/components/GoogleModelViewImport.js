@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export default function GoogleModelViewImport() {
   useEffect(() => {
-    import('@google/model-viewer')
-  })
+    import('@google/model-viewer');
+  });
 
-  return null
+  return null;
 }

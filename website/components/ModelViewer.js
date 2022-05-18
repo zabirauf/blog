@@ -1,12 +1,12 @@
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
 const GoogleModelViewImport = dynamic(() => import('./GoogleModelViewImport'), {
   ssr: false,
-})
+});
 
 export default function ModelViewer(props) {
-  const { alt, src } = props
-  const style = props.style || {}
+  const { alt, src } = props;
+  const style = props.style || {};
 
   return (
     <>
@@ -22,5 +22,5 @@ export default function ModelViewer(props) {
         camera-controls
       />
     </>
-  )
+  );
 }

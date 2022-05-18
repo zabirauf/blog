@@ -1,4 +1,4 @@
-import siteMetadata from '@/data/siteMetadata'
+import siteMetadata from '@/data/siteMetadata';
 
 const generateRssItem = (post) => `
   <item>
@@ -10,7 +10,7 @@ const generateRssItem = (post) => `
     <author>${siteMetadata.email} (${siteMetadata.author})</author>
     ${post.tags.map((t) => `<category>${t}</category>`).join('')}
   </item>
-`
+`;
 
 const generateRss = (posts, page = 'index.xml') => `
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -26,5 +26,5 @@ const generateRss = (posts, page = 'index.xml') => `
       ${posts.map(generateRssItem).join('')}
     </channel>
   </rss>
-`
-export default generateRss
+`;
+export default generateRss;
