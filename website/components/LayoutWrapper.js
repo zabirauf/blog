@@ -31,13 +31,7 @@ const LayoutWrapper = ({ children }) => {
           <div className="flex items-center text-base leading-5">
             <div className="hidden sm:block">
               {headerNavLinks.map((link) => (
-                <Link
-                  key={link.title}
-                  href={link.href}
-                  className="p-1 font-medium text-gray-900 sm:p-4 dark:text-gray-100"
-                >
-                  {link.title}
-                </Link>
+                <MenuButton key={link.title} href={link.href} title={link.title} />
               ))}
             </div>
             <ThemeSwitch />
@@ -48,6 +42,14 @@ const LayoutWrapper = ({ children }) => {
         <Footer />
       </div>
     </SectionContainer>
+  )
+}
+
+function MenuButton({ href, title }) {
+  return (
+    <Link href={href} className="p-1 font-medium text-gray-900 sm:p-4 dark:text-gray-100">
+      {title}
+    </Link>
   )
 }
 
