@@ -100,6 +100,32 @@ function XCSoarConfigGenerator() {
   const downloadConfig = useCallback(() => {
     generateAndDownloadConfig(blueflyButtons)
   }, [blueflyButtons])
+
+  const moveButtonUp = useCallback(
+    (idx) => {
+      const newOrder = [...blueflyButtons]
+      if (idx !== 0) {
+        const tmp = newOrder[idx]
+        newOrder[idx] = newOrder[idx - 1]
+        newOrder[idx - 1] = tmp
+        setBlueflyButtons(newOrder)
+      }
+    },
+    [blueflyButtons]
+  )
+  const moveButtonDown = useCallback(
+    (idx) => {
+      const newOrder = [...blueflyButtons]
+      if (idx !== blueflyButtons.length - 1) {
+        const tmp = newOrder[idx]
+        newOrder[idx] = newOrder[idx + 1]
+        newOrder[idx + 1] = tmp
+        setBlueflyButtons(newOrder)
+      }
+    },
+    [blueflyButtons]
+  )
+
   return (
     <>
       <header className="bg-gray-100 rounded-md p-4 mb-8">
@@ -161,26 +187,72 @@ function XCSoarConfigGenerator() {
                   </svg>
                 </dd>
                 <dd className="mt-1 text-2xl font-semibold text-gray-900">{button.name}</dd>
-                {button.name !== CANCEL_BUTTON.name && (
-                  <button
-                    type="button"
-                    className="bg-white py-2 ml-auto px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={() => onButtonRemove(idx)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                <div className="ml-auto flex">
+                  {button.name !== CANCEL_BUTTON.name && (
+                    <button
+                      type="button"
+                      className="bg-white mr-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={() => onButtonRemove(idx)}
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                )}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                  {idx !== 0 && (
+                    <button
+                      type="button"
+                      className="bg-white mr-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={() => moveButtonUp(idx)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M7 11l5-5m0 0l5 5m-5-5v12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                  {idx !== blueflyButtons.length - 1 && (
+                    <button
+                      type="button"
+                      className="bg-white mr-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={() => moveButtonDown(idx)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17 13l-5 5m0 0l-5-5m5 5V6"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             </li>
           ))}
