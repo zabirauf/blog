@@ -1,8 +1,8 @@
-import siteMetadata from '@/data/siteMetadata'
-import { PageSeo } from '@/components/SEO'
-import { Fragment, useState, useCallback } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import * as ReactDOM from 'react-dom'
+import siteMetadata from '@/data/siteMetadata';
+import { PageSeo } from '@/components/SEO';
+import { Fragment, useState, useCallback } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import * as ReactDOM from 'react-dom';
 
 const DEFAULT_BUTTONS = [
   {
@@ -43,17 +43,17 @@ const DEFAULT_BUTTONS = [
     name: 'Togg Off',
     events: ['SendNMEAPort1 BTT 2000'],
   },
-]
+];
 
 const CANCEL_BUTTON = {
   name: 'Cancel',
   events: ['Mode default'],
-}
+};
 
-const CUSTOM_OPTION_VALUE = 'custom'
-const NO_OPTION_VALUE = 'none'
-const COMMANDS_INPUT_ID_PREFIX = 'commands-'
-const DEFAULT_FILE_NAME = 'BlueFly Menu.xci'
+const CUSTOM_OPTION_VALUE = 'custom';
+const NO_OPTION_VALUE = 'none';
+const COMMANDS_INPUT_ID_PREFIX = 'commands-';
+const DEFAULT_FILE_NAME = 'BlueFly Menu.xci';
 
 export default function About() {
   return (
@@ -74,7 +74,7 @@ export default function About() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function XCSoarConfigGenerator() {
@@ -83,48 +83,48 @@ function XCSoarConfigGenerator() {
     DEFAULT_BUTTONS[1],
     DEFAULT_BUTTONS[3],
     CANCEL_BUTTON,
-  ])
+  ]);
   const addButton = useCallback(() => {
-    openAddButtonDialog((buttonInfo) => setBlueflyButtons([...blueflyButtons, buttonInfo]))
-  }, [blueflyButtons])
+    openAddButtonDialog((buttonInfo) => setBlueflyButtons([...blueflyButtons, buttonInfo]));
+  }, [blueflyButtons]);
 
   const onButtonRemove = useCallback(
     (idx) => {
-      const newBlueflyButtons = [...blueflyButtons]
-      newBlueflyButtons.splice(idx, 1)
-      setBlueflyButtons(newBlueflyButtons)
+      const newBlueflyButtons = [...blueflyButtons];
+      newBlueflyButtons.splice(idx, 1);
+      setBlueflyButtons(newBlueflyButtons);
     },
     [blueflyButtons]
-  )
+  );
 
   const downloadConfig = useCallback(() => {
-    generateAndDownloadConfig(blueflyButtons)
-  }, [blueflyButtons])
+    generateAndDownloadConfig(blueflyButtons);
+  }, [blueflyButtons]);
 
   const moveButtonUp = useCallback(
     (idx) => {
-      const newOrder = [...blueflyButtons]
+      const newOrder = [...blueflyButtons];
       if (idx !== 0) {
-        const tmp = newOrder[idx]
-        newOrder[idx] = newOrder[idx - 1]
-        newOrder[idx - 1] = tmp
-        setBlueflyButtons(newOrder)
+        const tmp = newOrder[idx];
+        newOrder[idx] = newOrder[idx - 1];
+        newOrder[idx - 1] = tmp;
+        setBlueflyButtons(newOrder);
       }
     },
     [blueflyButtons]
-  )
+  );
   const moveButtonDown = useCallback(
     (idx) => {
-      const newOrder = [...blueflyButtons]
+      const newOrder = [...blueflyButtons];
       if (idx !== blueflyButtons.length - 1) {
-        const tmp = newOrder[idx]
-        newOrder[idx] = newOrder[idx + 1]
-        newOrder[idx + 1] = tmp
-        setBlueflyButtons(newOrder)
+        const tmp = newOrder[idx];
+        newOrder[idx] = newOrder[idx + 1];
+        newOrder[idx + 1] = tmp;
+        setBlueflyButtons(newOrder);
       }
     },
     [blueflyButtons]
-  )
+  );
 
   return (
     <>
@@ -175,7 +175,7 @@ function XCSoarConfigGenerator() {
         <ul className="-my-5 divide-y divide-gray-200">
           {blueflyButtons.map((button, idx) => (
             <li key={button.name} className="py-4 select-none">
-              <div className="px-4 py-2 bg-white shadow rounded-lg overflow-hidden flex hover:bg-indigo-50 cursor-move">
+              <div className="px-4 py-2 bg-white shadow rounded-lg overflow-hidden flex hover:bg-indigo-50">
                 <dd className="mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -259,7 +259,7 @@ function XCSoarConfigGenerator() {
         </ul>
       </div>
     </>
-  )
+  );
 }
 
 function generateAndDownloadConfig(buttonsConfig) {
@@ -279,10 +279,10 @@ function generateAndDownloadConfig(buttonsConfig) {
     '#',
     '# ******* level 1 *******',
     '#',
-  ]
+  ];
 
   for (let index = 0; index < buttonsConfig.length; index++) {
-    const buttonConfig = buttonsConfig[index]
+    const buttonConfig = buttonsConfig[index];
     lines.push(
       ...[
         'mode=BlueFly',
@@ -292,76 +292,76 @@ function generateAndDownloadConfig(buttonsConfig) {
         `location=${index + 1}`,
         '',
       ]
-    )
+    );
   }
 
   const fileBlob = new Blob(
     lines.map((l) => `${l}\n`),
     { type: 'text/plain' }
-  )
-  const objUrl = URL.createObjectURL(fileBlob)
+  );
+  const objUrl = URL.createObjectURL(fileBlob);
 
-  const a = document.createElement('a')
-  a.href = objUrl
-  a.download = DEFAULT_FILE_NAME
-  document.body.appendChild(a)
-  a.click()
+  const a = document.createElement('a');
+  a.href = objUrl;
+  a.download = DEFAULT_FILE_NAME;
+  document.body.appendChild(a);
+  a.click();
 
-  URL.revokeObjectURL(objUrl)
-  a.remove()
+  URL.revokeObjectURL(objUrl);
+  a.remove();
 }
 
 function openAddButtonDialog(onButtonAddedCallback) {
-  const elem = document.createElement('div')
-  document.body.appendChild(elem)
-  const onDialogClose = () => elem.remove()
+  const elem = document.createElement('div');
+  document.body.appendChild(elem);
+  const onDialogClose = () => elem.remove();
   ReactDOM.render(
     <AddButtonDialog onClose={onDialogClose} onButtonAdded={onButtonAddedCallback} />,
     elem
-  )
+  );
 }
 
 function AddButtonDialog(props) {
-  const { onClose, onButtonAdded } = props
-  const [open, setOpen] = useState(true)
-  const [selectedButtonType, setSelectedButtonType] = useState(NO_OPTION_VALUE)
-  const [currentSelectedButtonData, setCurrentSelectedButtonData] = useState(null)
-  const isCustomSelected = selectedButtonType === CUSTOM_OPTION_VALUE
+  const { onClose, onButtonAdded } = props;
+  const [open, setOpen] = useState(true);
+  const [selectedButtonType, setSelectedButtonType] = useState(NO_OPTION_VALUE);
+  const [currentSelectedButtonData, setCurrentSelectedButtonData] = useState(null);
+  const isCustomSelected = selectedButtonType === CUSTOM_OPTION_VALUE;
 
   const buttonTypeChanged = useCallback((e) => {
-    const newlySelectedButtonType = e.target.options[e.target.selectedIndex].value
-    setSelectedButtonType(newlySelectedButtonType)
+    const newlySelectedButtonType = e.target.options[e.target.selectedIndex].value;
+    setSelectedButtonType(newlySelectedButtonType);
 
     const buttonData =
       newlySelectedButtonType === CUSTOM_OPTION_VALUE
         ? { name: '', events: [''] }
-        : DEFAULT_BUTTONS.filter((b) => b.name === newlySelectedButtonType)[0]
-    setCurrentSelectedButtonData(buttonData)
-  }, [])
+        : DEFAULT_BUTTONS.filter((b) => b.name === newlySelectedButtonType)[0];
+    setCurrentSelectedButtonData(buttonData);
+  }, []);
 
   const closeCallback = useCallback(
     (opened) => {
-      setOpen(opened)
-      onClose?.()
+      setOpen(opened);
+      onClose?.();
     },
     [onClose]
-  )
+  );
 
   const onNameChange = useCallback(
     (e) => setCurrentSelectedButtonData({ ...currentSelectedButtonData, name: e.target.value }),
     [currentSelectedButtonData]
-  )
+  );
 
   const onCommandChange = useCallback(
     (e) => {
-      const index = parseInt(e.target.id.split(COMMANDS_INPUT_ID_PREFIX)[1])
-      const newSelectedButtonData = { ...currentSelectedButtonData }
-      newSelectedButtonData.events[index] = e.target.value
+      const index = parseInt(e.target.id.split(COMMANDS_INPUT_ID_PREFIX)[1]);
+      const newSelectedButtonData = { ...currentSelectedButtonData };
+      newSelectedButtonData.events[index] = e.target.value;
 
-      setCurrentSelectedButtonData(newSelectedButtonData)
+      setCurrentSelectedButtonData(newSelectedButtonData);
     },
     [currentSelectedButtonData]
-  )
+  );
 
   const onCommandAdd = useCallback(
     () =>
@@ -370,21 +370,21 @@ function AddButtonDialog(props) {
         events: [...currentSelectedButtonData.events, ''],
       }),
     [currentSelectedButtonData]
-  )
+  );
   const onCommandRemove = useCallback(
     (index) => {
-      const newEvents = [...currentSelectedButtonData.events]
-      newEvents.splice(index, 1)
-      setCurrentSelectedButtonData({ ...currentSelectedButtonData, events: newEvents })
+      const newEvents = [...currentSelectedButtonData.events];
+      newEvents.splice(index, 1);
+      setCurrentSelectedButtonData({ ...currentSelectedButtonData, events: newEvents });
     },
     [currentSelectedButtonData]
-  )
+  );
 
-  const closeDialog = useCallback(() => setOpen(false), [])
+  const closeDialog = useCallback(() => setOpen(false), []);
   const saveAndClose = useCallback(() => {
-    onButtonAdded(currentSelectedButtonData)
-    setOpen(false)
-  }, [currentSelectedButtonData, onButtonAdded])
+    onButtonAdded(currentSelectedButtonData);
+    setOpen(false);
+  }, [currentSelectedButtonData, onButtonAdded]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -553,5 +553,5 @@ function AddButtonDialog(props) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }
