@@ -81,6 +81,7 @@ function XCSoarConfigGenerator() {
   const [blueflyButtons, setBlueflyButtons] = useState([
     DEFAULT_BUTTONS[0],
     DEFAULT_BUTTONS[1],
+    DEFAULT_BUTTONS[2],
     DEFAULT_BUTTONS[3],
     CANCEL_BUTTON,
   ]);
@@ -128,7 +129,13 @@ function XCSoarConfigGenerator() {
 
   return (
     <>
-      <header className="bg-gray-100 rounded-md p-4 mb-8">
+      <p className="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-100">
+        This generator will help you generate XCSoar menu to configure{' '}
+        <a href="https://blueflyvario.com/" target="_blank" rel="noreferrer">
+          BlueFly vario
+        </a>
+      </p>
+      <header className="bg-gray-100 dark:bg-gray-700 rounded-md p-4 mb-8">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
           <button
             className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -175,7 +182,7 @@ function XCSoarConfigGenerator() {
         <ul className="-my-5 divide-y divide-gray-200">
           {blueflyButtons.map((button, idx) => (
             <li key={button.name} className="py-4 select-none">
-              <div className="px-4 py-2 bg-white shadow rounded-lg overflow-hidden flex hover:bg-indigo-50">
+              <div className="px-4 py-2 bg-white dark:bg-gray-700 shadow rounded-lg overflow-hidden flex hover:bg-indigo-50">
                 <dd className="mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +193,9 @@ function XCSoarConfigGenerator() {
                     <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                   </svg>
                 </dd>
-                <dd className="mt-1 text-2xl font-semibold text-gray-900">{button.name}</dd>
+                <dd className="mt-1 text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                  {button.name}
+                </dd>
                 <div className="ml-auto flex">
                   {button.name !== CANCEL_BUTTON.name && (
                     <button
@@ -382,7 +391,10 @@ function AddButtonDialog(props) {
 
   const closeDialog = useCallback(() => setOpen(false), []);
   const saveAndClose = useCallback(() => {
-    onButtonAdded(currentSelectedButtonData);
+    // Filtering any empty command
+    const filteredButtonData = { ...currentSelectedButtonData };
+    filteredButtonData.events = filteredButtonData.events.filter((evt) => evt.trim() !== '');
+    onButtonAdded(filteredButtonData);
     setOpen(false);
   }, [currentSelectedButtonData, onButtonAdded]);
 
@@ -412,12 +424,12 @@ function AddButtonDialog(props) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-4xl sm:w-full sm:p-6">
+              <Dialog.Panel className="relative bg-white dark:bg-gray-700 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-4xl sm:w-full sm:p-6">
                 <div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
                   <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:items-start sm:pt-5">
                     <label
                       htmlFor="button_type"
-                      className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
                     >
                       Type
                     </label>
@@ -426,7 +438,7 @@ function AddButtonDialog(props) {
                         id="button_type"
                         name="button_type"
                         autoComplete="button-type"
-                        className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+                        className="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 dark:border-white dark:bg-gray-800 rounded-md"
                         onChange={buttonTypeChanged}
                       >
                         <option value={NO_OPTION_VALUE}>Please select a type</option>
@@ -445,7 +457,7 @@ function AddButtonDialog(props) {
                       <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                         <label
                           htmlFor="name"
-                          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
                         >
                           Name
                         </label>
@@ -456,7 +468,7 @@ function AddButtonDialog(props) {
                               name="name"
                               id="name"
                               autoComplete="name"
-                              className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-300"
+                              className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-300 dark:bg-gray-800"
                               value={currentSelectedButtonData.name}
                               onChange={onNameChange}
                             />
@@ -469,7 +481,7 @@ function AddButtonDialog(props) {
                           <div className="sm:grid sm:grid-cols-4 sm:gap-4 sm:items-baseline">
                             <div>
                               <div
-                                className="text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700"
+                                className="text-base font-medium text-gray-700 dark:text-gray-100 sm:text-sm sm:text-gray-700 sm:dark:text-gray-100"
                                 id="label-commands"
                               >
                                 Commands
@@ -477,7 +489,7 @@ function AddButtonDialog(props) {
                             </div>
                             <div className="sm:col-span-3">
                               <div className="max-w-lg">
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-gray-100">
                                   These are commands sent to BlueFly when you tap the button.
                                 </p>
                                 <div className="mt-4 space-y-4">
@@ -487,7 +499,7 @@ function AddButtonDialog(props) {
                                         type="text"
                                         name="commands"
                                         id={`${COMMANDS_INPUT_ID_PREFIX}${idx}`}
-                                        className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-300"
+                                        className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md sm:text-sm border-gray-300 dark:bg-gray-800"
                                         value={evt}
                                         onChange={onCommandChange}
                                       />
