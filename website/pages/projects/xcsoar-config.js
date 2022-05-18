@@ -59,14 +59,14 @@ export default function About() {
   return (
     <>
       <PageSeo
-        title={`About - ${siteMetadata.author}`}
-        description={`XCSoar menu configuration generator for BlueFly`}
+        title={'XCSoar menu generator for BlueFly'}
+        description={'XCSoar menu generator for BlueFly'}
         url={`${siteMetadata.siteUrl}/xcsoar-bluefly`}
       />
       <div className="divide-y">
         <div className="pt-6 pb-8 space-y-2 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            XCSoar configuration generator
+            XCSoar menu generator
           </h1>
         </div>
         <div className="items-start space-y-2 pt-4">
