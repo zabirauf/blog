@@ -1,5 +1,5 @@
-import { NextSeo, ArticleJsonLd } from 'next-seo'
-import siteMetadata from '@/data/siteMetadata'
+import { NextSeo, ArticleJsonLd } from 'next-seo';
+import siteMetadata from '@/data/siteMetadata';
 
 export const SEO = {
   title: siteMetadata.title,
@@ -30,7 +30,7 @@ export const SEO = {
       content: siteMetadata.author,
     },
   ],
-}
+};
 
 export const PageSeo = ({ title, description, url }) => {
   return (
@@ -44,25 +44,25 @@ export const PageSeo = ({ title, description, url }) => {
         description,
       }}
     />
-  )
-}
+  );
+};
 
 export const BlogSeo = ({ title, summary, date, lastmod, url, tags, images = [] }) => {
-  const publishedAt = new Date(date).toISOString()
-  const modifiedAt = new Date(lastmod || date).toISOString()
+  const publishedAt = new Date(date).toISOString();
+  const modifiedAt = new Date(lastmod || date).toISOString();
   let imagesArr =
     images.length === 0
       ? [siteMetadata.socialBanner]
       : typeof images === 'string'
       ? [images]
-      : images
+      : images;
 
   const featuredImages = imagesArr.map((img) => {
     return {
       url: `${siteMetadata.siteUrl}${img}`,
       alt: title,
-    }
-  })
+    };
+  });
 
   return (
     <>
@@ -101,5 +101,5 @@ export const BlogSeo = ({ title, summary, date, lastmod, url, tags, images = [] 
         url={url}
       />
     </>
-  )
-}
+  );
+};

@@ -5,6 +5,6 @@ const projectsData = [
     imgSrc: '/static/images/xcsoar.svg',
     href: '/projects/xcsoar-config',
   },
-]
+];
 
-export default projectsData
+export default projectsData;
