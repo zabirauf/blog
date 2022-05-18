@@ -53,13 +53,14 @@ const CANCEL_BUTTON = {
 const CUSTOM_OPTION_VALUE = 'custom'
 const NO_OPTION_VALUE = 'none'
 const COMMANDS_INPUT_ID_PREFIX = 'commands-'
+const DEFAULT_FILE_NAME = 'BlueFly Menu.xci'
 
 export default function About() {
   return (
     <>
       <PageSeo
         title={`About - ${siteMetadata.author}`}
-        description={`About me - ${siteMetadata.author}`}
+        description={`XCSoar menu configuration generator for BlueFly`}
         url={`${siteMetadata.siteUrl}/xcsoar-bluefly`}
       />
       <div className="divide-y">
@@ -86,17 +87,73 @@ function XCSoarConfigGenerator() {
   const addButton = useCallback(() => {
     openAddButtonDialog((buttonInfo) => setBlueflyButtons([...blueflyButtons, buttonInfo]))
   }, [blueflyButtons])
+
+  const onButtonRemove = useCallback(
+    (idx) => {
+      const newBlueflyButtons = [...blueflyButtons]
+      newBlueflyButtons.splice(idx, 1)
+      setBlueflyButtons(newBlueflyButtons)
+    },
+    [blueflyButtons]
+  )
+
+  const downloadConfig = useCallback(() => {
+    generateAndDownloadConfig(blueflyButtons)
+  }, [blueflyButtons])
   return (
     <>
-      <div className="flow-root mt-6">
+      <header className="bg-gray-100 rounded-md p-4 mb-8">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
+          <button
+            className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={addButton}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Add button
+          </button>
+
+          <button
+            className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={downloadConfig}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Download config
+          </button>
+        </nav>
+      </header>
+      <div className="mt-6">
         <ul className="-my-5 divide-y divide-gray-200">
-          {blueflyButtons.map((button) => (
-            <li key={button.name} className="py-4">
-              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 flex hover:bg-indigo-50 cursor-pointer">
+          {blueflyButtons.map((button, idx) => (
+            <li key={button.name} className="py-4 select-none">
+              <div className="px-4 py-2 bg-white shadow rounded-lg overflow-hidden flex hover:bg-indigo-50 cursor-move">
                 <dd className="mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="h-7 w-7"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -104,32 +161,82 @@ function XCSoarConfigGenerator() {
                   </svg>
                 </dd>
                 <dd className="mt-1 text-2xl font-semibold text-gray-900">{button.name}</dd>
+                {button.name !== CANCEL_BUTTON.name && (
+                  <button
+                    type="button"
+                    className="bg-white py-2 ml-auto px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={() => onButtonRemove(idx)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                )}
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <button
-        type="submit"
-        className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        onClick={addButton}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Add button
-      </button>
     </>
   )
+}
+
+function generateAndDownloadConfig(buttonsConfig) {
+  const lines = [
+    '# XCSoar menu for BlueFly',
+    '# Generated from https://zabirauf.dev/projects/xcsoar-config',
+    '#',
+    '',
+    '# ******* Entry for top level menu',
+    '',
+    'mode=Menu',
+    'type=key',
+    'event=Mode BlueFly',
+    'label=BlueFly',
+    'location=5',
+    '',
+    '#',
+    '# ******* level 1 *******',
+    '#',
+  ]
+
+  for (let index = 0; index < buttonsConfig.length; index++) {
+    const buttonConfig = buttonsConfig[index]
+    lines.push(
+      ...[
+        'mode=BlueFly',
+        'type=key',
+        ...buttonConfig.events.map((evt) => `event=${evt}`),
+        `label=${buttonConfig.name}`,
+        `location=${index + 1}`,
+        '',
+      ]
+    )
+  }
+
+  const fileBlob = new Blob(
+    lines.map((l) => `${l}\n`),
+    { type: 'text/plain' }
+  )
+  const objUrl = URL.createObjectURL(fileBlob)
+
+  const a = document.createElement('a')
+  a.href = objUrl
+  a.download = DEFAULT_FILE_NAME
+  document.body.appendChild(a)
+  a.click()
+
+  URL.revokeObjectURL(objUrl)
+  a.remove()
 }
 
 function openAddButtonDialog(onButtonAddedCallback) {
