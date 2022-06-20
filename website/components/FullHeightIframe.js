@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import Spinner from './Spinner';
 
 const TIME_BETWEEN_CHECKS_MS = 1000;
@@ -78,6 +78,60 @@ export default function FullHeightIframe(props) {
         className={!hasLoaded ? 'invisible' : 'bg-white'}
         ref={iframeRef}
         onLoad={onIframeLoaded}
+        src={src}
+        width="100%"
+        height="100%"
+      />
+    </>
+  );
+}
+
+export function ObservableHQFullHeightIframe(props) {
+  const { src } = props;
+
+  const iframeRef = useRef(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const onMessageCallback = useCallback(
+    (message) => {
+      if (message.source !== iframeRef.current?.contentWindow) return;
+
+      let { data } = message;
+
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch (ignore) {
+          return;
+        }
+      }
+
+      if (data.context !== 'iframe.resize') return;
+
+      iframeRef.current.style.height = `${data.height}px`;
+      setHasLoaded(true);
+    },
+    [iframeRef.current, setHasLoaded]
+  );
+
+  useEffect(() => {
+    const messageCallbackToAdd = onMessageCallback;
+    addEventListener('message', onMessageCallback);
+
+    return () => removeEventListener('message', messageCallbackToAdd);
+  }, [onMessageCallback]);
+
+  return (
+    <>
+      {!hasLoaded && (
+        <div className="flex justify-items-center">
+          <Spinner />
+        </div>
+      )}
+      <iframe
+        title="Notebook"
+        className="bg-white"
+        ref={iframeRef}
         src={src}
         width="100%"
         height="100%"
