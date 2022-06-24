@@ -108,7 +108,8 @@ export function ObservableHQFullHeightIframe(props) {
 
       if (data.context !== 'iframe.resize') return;
 
-      iframeRef.current.style.height = `${data.height}px`;
+      // Adding extra 100 as in practice it was jumping between scroll and no-scroll
+      iframeRef.current.style.height = `${data.height + 100}px`;
       setHasLoaded(true);
     },
     [iframeRef.current, setHasLoaded]
@@ -130,7 +131,7 @@ export function ObservableHQFullHeightIframe(props) {
       )}
       <iframe
         title="Notebook"
-        className="bg-white"
+        className="bg-white overflow-hidden"
         ref={iframeRef}
         src={src}
         width="100%"
